@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd">
+<language name="HAL" section="Other"
+          version="1.0" kateversion="2.4"
+          indenter="cstyle"
+          extensions="*.hal;*.HAL"
+          mimetype="text/hal"
+          casesensitive="1" 
+          author="Alexander Rössler (mail.aroessler@gmail.at)" 
+          license="LGPL">
+<!--
+##########################################################################
+## 
+##########################################################################
+-->
+  <highlighting>
+    <list name="builtin">
+      <item> loadrt </item>
+      <item> loadusr </item>
+      <item> addf </item>
+      <item> setp </item>
+      <item> sets </item>
+      <item> start </item>
+      <item> newpin </item>
+      <item> newcomp </item>
+      <item> newsig </item>
+      <item> ready </item>
+      <item> net </item>
+    </list>
+    <list name="types">
+      <item> u32 </item>
+      <item> s32 </item>
+      <item> int </item>
+      <item> bit </item>
+      <item> float </item>
+    </list>
+    <list name="keywords">
+      <item> TRUE </item>
+      <item> FALSE </item>
+    </list>
+    
+    <contexts>
+        <context attribute="Normal Text" lineEndContext="#stay" name="Start">
+        <IncludeRules context="FindAll" />
+      </context>
+
+<!-- ====== The following rulessets are meant to be included ======== -->
+      <!-- FindAll tries to interpret everything -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindAll">
+        <IncludeRules context="FindComments" />
+        <IncludeRules context="FindCommands" />
+        <IncludeRules context="FindDataTypes" />
+        <IncludeRules context="FindNumbers" />
+        <IncludeRules context="FindStrings" />
+      </context>
+      
+      <!-- FindComments consumes shell comments till EOL -->
+      <context attribute="Normal Text" lineEndContext="#pop" name="FindComments">
+        <DetectChar attribute="Comment" context="Comment" char="#" firstNonSpace="true"/>
+        <RegExpr attribute="Normal Text" context="Comment" String="[\s;](?=#)" />
+      </context>
+      <context attribute="Comment" lineEndContext="#pop" name="Comment">
+        <IncludeRules context="##Alerts" />
+        <IncludeRules context="##Modelines" />
+      </context>
+
+      <!-- FindCommentsParen consumes shell comments till EOL or a closing parenthese -->
+      <context attribute="Normal Text" lineEndContext="#pop" name="FindCommentsParen">
+        <DetectChar attribute="Comment" context="CommentParen" char="#" firstNonSpace="true"/>
+        <RegExpr attribute="Normal Text" context="CommentParen" String="[\s;](?=#)" />
+      </context>
+      <context attribute="Comment" lineEndContext="#pop" name="CommentParen">
+        <RegExpr attribute="Comment" context="#pop" String="[^)](?=\))" />
+        <IncludeRules context="##Alerts" />
+      </context>
+
+      <!-- FindCommentsBackq consumes shell comments till EOL or a backquote -->
+      <context attribute="Normal Text" lineEndContext="#pop" name="FindCommentsBackq">
+        <DetectChar attribute="Comment" context="CommentBackq" char="#" firstNonSpace="true"/>
+        <RegExpr attribute="Normal Text" context="CommentBackq" String="[\s;](?=#)" />
+      </context>
+      <context attribute="Comment" lineEndContext="#pop" name="CommentBackq">
+        <RegExpr attribute="Comment" context="#pop" String="[^`](?=`)" />
+        <IncludeRules context="##Alerts" />
+      </context>
+      
+            <!-- FindStrings looks for single and double quoted strings, also with $-prefix -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindStrings">
+        <Detect2Chars attribute="Escape" context="#stay" char="\\" char1="'" />
+        <Detect2Chars attribute="Escape" context="#stay" char="\\" char1="&quot;" />
+        <DetectChar attribute="String SingleQ" context="StringSQ" char="'" />
+        <DetectChar attribute="String DoubleQ" context="StringDQ" char="&quot;" />
+        <Detect2Chars attribute="String SingleQ" context="StringEsc" char="$" char1="'" />
+        <Detect2Chars attribute="String Transl." context="StringDQ" char="$" char1="&quot;" />
+      </context>
+      
+      <!-- FindCommands matches many items that can be expected outside strings, substitutions etc. -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindCommands">
+        <IncludeRules context="FindNormalCommands" />
+      </context>
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindNormalCommands">
+        <keyword attribute="Command" context="#stay" String="builtin" />
+        <keyword attribute="Keyword" context="#stay" String="keywords" />
+      </context>
+      
+      <!-- FindDataTypes matches all data types -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindDataTypes">
+        <keyword attribute="Data Type" context="#stay" String="types"/>
+      </context>
+      
+      <!-- FindNumbers matches all numbers -->
+      <context attribute="Normal Text" lineEndContext="#stay" name="FindNumbers">
+        <DetectSpaces />
+        <Float attribute="Float" context="#stay">
+          <AnyChar String="fF" attribute="Float" context="#stay"/>
+        </Float>
+        <HlCOct attribute="Octal" context="#stay"/>
+        <HlCHex attribute="Hex" context="#stay"/>
+        <Int attribute="Decimal" context="#stay" >
+          <StringDetect attribute="Decimal" context="#stay" String="ULL" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="LUL" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="LLU" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="UL" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="LU" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="LL" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="U" insensitive="TRUE"/>
+          <StringDetect attribute="Decimal" context="#stay" String="L" insensitive="TRUE"/>
+        </Int>
+      </context>
+    </contexts>
+    
+    <itemDatas>
+      <itemData name="Normal Text"  defStyleNum="dsNormal" />
+      <itemData name="Comment"      defStyleNum="dsComment" />
+      <itemData name="Keyword"      defStyleNum="dsKeyword" />
+      <itemData name="Data Type"    defStyleNum="dsDataType" spellChecking="false"/>
+      <itemData name="Control"      defStyleNum="dsKeyword" />
+      <itemData name="Command"      defStyleNum="dsKeyword" />
+      <itemData name="Escape"       defStyleNum="dsDataType" />
+      <itemData name="String SingleQ"   defStyleNum="dsString" />
+      <itemData name="String DoubleQ"   defStyleNum="dsString" />
+      <itemData name="Backquote"    defStyleNum="dsKeyword" />
+      <itemData name="String Transl."   defStyleNum="dsString" />
+      <itemData name="String Escape"    defStyleNum="dsDataType" />
+      <itemData name="Variable"     defStyleNum="dsOthers" />
+      <itemData name="Expression"   defStyleNum="dsOthers" />
+      <itemData name="Function"     defStyleNum="dsFunction" />
+      <itemData name="Path"         defStyleNum="dsNormal" />
+      <itemData name="Option"       defStyleNum="dsNormal" />
+      <itemData name="Error"        defStyleNum="dsError" />
+      <itemData name="Decimal"      defStyleNum="dsDecVal" spellChecking="false"/>
+      <itemData name="Octal"        defStyleNum="dsBaseN" spellChecking="false"/>
+      <itemData name="Hex"          defStyleNum="dsBaseN" spellChecking="false"/>
+      <itemData name="Float"        defStyleNum="dsFloat" spellChecking="false"/>
+    </itemDatas>
+  </highlighting>
+  <general>
+    <comments>
+      <comment name="singleLine" start="#" />
+    </comments>
+    <keywords casesensitive="1" additionalDeliminator="'&quot;" />
+  </general>
+</language>
