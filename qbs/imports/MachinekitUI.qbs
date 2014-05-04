@@ -2,13 +2,14 @@ import qbs
 
 Product {
     property var qmlFiles
-    property string targetDir: "/home/linuxcnc/test"
-    property string importsDir: "."
-    property string applicationType: "ui"
+    property path projectDir: "/home/linuxcnc/projects/"
+    property path targetDir: projectDir + project.name + "/ui/" + name
+    //property string importsDir: "."
+    //property string applicationType: "ui"
 
     name: "MachinekitUI"
-    type: "application"
-    qbsSearchPaths: "../"
+    type: "ui"
+    //qbsSearchPaths: "../"
 
     qbs.installPrefix: targetDir
 

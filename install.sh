@@ -1,16 +1,22 @@
 #!/bin/bash
+QTCREATORDIR=$1/Tools/QtCreator
+TARGETDIR=$QTCREATORDIR/share/qtcreator/qbs
+SYNTAXDIR=~/.config/QtProject/qtcreator/generic-highlighter/
 
 cd qbs
-TARGETDIR=$1/share/qtcreator/qbs
-mkdir -p $TARGETDIR/modules/hal
-cp ./modules/hal/*.qbs $TARGETDIR/modules/hal/
 
-mkdir -p $TARGETDIR/imports
-cp ./imports/*.qbs $TARGETDIR/imports/
+MODULEDIR=$TARGETDIR/share/qbs/modules/hal/
+mkdir -p $MODULEDIR
+cp -v ./modules/hal/*.qbs $MODULEDIR
+
+IMPORTDIR=$TARGETDIR/share/qbs/imports/qbs/base/
+mkdir -p $IMPORTDIR
+cp -v ./imports/*.qbs $IMPORTDIR
 cd ..
 
 cd qtcreator
 
 cd syntax
-cp *.* ~/.config/QtProject/qtcreator/generic-highlighter/
+mkdir -p $SYNTAXDIR
+cp -v *.* $SYNTAXDIR
 cd ..

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/bbioconfig">
+        <file>BBIOConfig.mimetypes.xml</file>
+        <file>main.qml</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>

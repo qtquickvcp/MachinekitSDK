@@ -1,18 +1,20 @@
 import qbs
 
 Product {
-    property var halFiles
-    property var configFiles
-    property var bbioFiles
-    property var pythonFiles
-    property var compFiles
-    property var otherFiles
-    property string targetDir: "/home/linuxcnc/test"
+    property stringList halFiles
+    property stringList configFiles
+    property stringList bbioFiles
+    property stringList pythonFiles
+    property stringList compFiles
+    property stringList otherFiles
+    property path projectDir: "/home/linuxcnc/projects/"
+    property path targetDir: projectDir + project.name
     property string applicationType: "hal"
+    property var uis
 
     name: "MachinekitApplication"
-    type: "application"
-    qbsSearchPaths: "../"
+    type: ["application"]
+    //qbsSearchPaths: "../"
 
     qbs.installPrefix: targetDir
 
@@ -77,18 +79,15 @@ Product {
         qbs.installDir: ""
     }
 
-    /*Group {     // Install built files
-        name: "Install"
-        condition: true
-        fileTagsFilter: ["halout"]
-        qbs.install: true
-        //qbs.installPrefix: "/home/alexander/testinstall"
-        qbs.installDir: "hal"
-    }*/
-
     Group {
         condition: true
         fileTagsFilter: ["application"]
+        qbs.install: true
+        qbs.installDir: ""
+    }
+    Group {
+        condition: true
+        fileTagsFilter: ["appconfig"]
         qbs.install: true
         qbs.installDir: ""
     }
