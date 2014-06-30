@@ -1,27 +1,37 @@
 import qbs
 
 Product {
-    property stringList halFiles
-    property stringList configFiles
-    property stringList bbioFiles
-    property stringList pythonFiles
-    property stringList compFiles
-    property stringList otherFiles
-    property path projectDir: "/home/linuxcnc/projects/"
-    property path targetDir: projectDir + project.name
+    property stringList halFiles: []
+    property stringList configFiles: []
+    property stringList bbioFiles: []
+    property stringList pythonFiles: []
+    property stringList compFiles: []
+    property stringList otherFiles: []
+    /*property stringList uiFiles: {
+        var files = []
+        for (var i = 0; i < uis.length; ++i) {
+            files.push(uis[i][1])
+        }
+        return files
+    }*/
+
+    property string appsIni: ""
+    property string machinekitIni: ""
+    property path projectDir: "/home/machinekit/projects"
+    property path targetDir: projectDir + "/" + product.name
+    property path machinekitDir: "/home/machinekit/machinekit"
+    property string uiDir: "uis"
+    property int debugLevel: 5
     property string applicationType: "hal"
-    property var uis
+    property stringList uis: []
 
     name: "MachinekitApplication"
-    type: ["application"]
+    type: "application"
     //qbsSearchPaths: "../"
 
     qbs.installPrefix: targetDir
 
-    //Depends { name: "Qt.quick" }
-    //Depends { name: "Qt.qml" }
     Depends { name: "hal" }
-    //Depends { name: "cpp" }
 
     Group {
         name: "HAL files"
@@ -77,6 +87,15 @@ Product {
         overrideTags: false
         qbs.install: true
         qbs.installDir: ""
+    }
+
+    Group {
+        name: "UIs"
+        condition: ((files != undefined) && (files.length != 0))
+        files: uis
+        overrideTags: false
+        qbs.install: true
+        qbs.installDir: uiDir
     }
 
     Group {

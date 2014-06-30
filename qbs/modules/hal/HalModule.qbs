@@ -80,13 +80,8 @@ Module {
         inputs: ["hal"]
 
         Artifact {
-            fileName: "run.sh"
+            fileName: "run.py"
             fileTags: ["machinekit", "application"]
-        }
-
-        Artifact {
-            fileName: "appconfig.ini"
-            fileTags: ["appconfig"]
         }
 
         prepare: {
@@ -95,24 +90,60 @@ Module {
                 cmd.highlight = "codegen";
                 cmd.sourceCode = function() {
                     var file = new TextFile(outputs.machinekit[0].filePath, TextFile.WriteOnly);
-                    file.writeLine("#!/bin/bash")
-                    file.writeLine("export DEBUG=5")
-                    file.writeLine(". /home/linuxcnc/machinekit/scripts/rip-environment")
-                    file.writeLine("# kill any current sessions")
-                    file.writeLine("realtime stop")
-                    file.writeLine("cd " + product.targetDir)
-                    file.writeLine("halrun -I " + FileInfo.fileName(input.filePath))
-                    file.writeLine("exit 0")
+
+                    file.writeLine("#!/usr/bin/python")
+                    file.writeLine("")
+                    file.writeLine("import sys")
+                    file.writeLine("import os")
+                    file.writeLine("import subprocess")
+                    file.writeLine("from time import *")
+                    file.writeLine("import MachinekitLauncher as launcher")
+                    file.writeLine("")
+                    file.writeLine("launcher.registerExitHandler()")
+
+                    file.writeLine("launcher.setDebugLevel(" + product.debugLevel + ")")
+
+                    if (product.machinekitIni != "")
+                        file.writeLine("launcher.setMachinekitIni('" + product.machinekitIni +"')")
+
+                    file.writeLine("os.chdir(os.path.dirname(os.path.realpath(__file__)))")
+
+                    file.writeLine("")
+                    file.writeLine("try:")
+
+                    file.writeLine("    launcher.ripEnvironment()")
+
+                    for (var i = 0; i < product.bbioFiles.length; ++i) {
+                        file.writeLine("    launcher.loadBbioFile('" + product.bbioFiles[i] + "')")
+                    }
+
+                    file.writeLine("    launcher.checkInstallation()")
+                    file.writeLine("    launcher.clearSession()")
+
+                    var appList = ""
+                    for (var i = 0; i < product.uis.length; ++i) {
+                        appList += " '" + product.uiDir + "/" + FileInfo.fileName(product.uis[i]) + "'"
+                    }
+                    file.writeLine("    launcher.startProcess(\"configserver" + appList +"\")")
+
+                    file.writeLine("    launcher.startRealtime()")
+
+                    // run the file
+                    file.writeLine("    launcher.loadHalFile('" + FileInfo.fileName(input.filePath) + "')")
+
+                    file.writeLine("except subprocess.CalledProcessError:")
+                    file.writeLine("    sys.exit(1)")
+                    file.writeLine("")
+
+                    // loop
+                    file.writeLine("while True:")
+                    file.writeLine("    sleep(1)")
+                    file.writeLine("    launcher.checkProcesses()")
+
                     file.close();
+
                     var process = Process()
                     process.exec("chmod", ["+x", outputs.machinekit[0].filePath], false)
-
-                    var file = new TextFile(outputs.appconfig[0].filePath, TextFile.WriteOnly);
-                    for (var i = 0; i < product.uis.length; ++i)
-                    {
-                        file.writeLine("[" + product.uis[i] + "]")
-                    }
-                    file.close();
                 }
                 return cmd;
             }
@@ -157,7 +188,7 @@ Module {
                     var file = new TextFile(output.filePath, TextFile.WriteOnly);
                     file.writeLine("#!/bin/bash")
                     file.writeLine("export DEBUG=5")
-                    file.writeLine(". /home/linuxcnc/machinekit/scripts/rip-environment")
+                    file.writeLine(". /home/machinekit/machinekit/scripts/rip-environment")
                     file.writeLine("cd " + product.targetDir)
                     file.writeLine("linuxcnc " + FileInfo.fileName(input.filePath))
                     file.writeLine("exit 0")
@@ -184,18 +215,22 @@ Module {
                 cmd.highlight = "codegen";
                 cmd.sourceCode = function() {
                     var file = new TextFile(output.filePath, TextFile.WriteOnly);
-                    file.writeLine("import QtQuick 2.1")
-                    file.writeLine("import QtQuick.Controls 1.1")
-                    file.writeLine("ApplicationWindow {")
-                    file.writeLine("visible: true")
-                    file.writeLine("title: application.title")
-                    file.writeLine("width: application.width")
-                    file.writeLine("height: application.height")
-                    file.writeLine(FileInfo.baseName(inputs.qml[0].filePath) + " {")
-                    file.writeLine("id: application")
-                    file.writeLine("Component.onCompleted: {")
-                    file.writeLine("anchors.fill = parent")
-                    file.writeLine("}}}")
+                    file.write("import QtQuick 2.1 \n \
+                                import QtQuick.Controls 1.1 \n \
+                                import Machinekit.HalRemote 1.0 \n \
+                                import Machinekit.HalRemote.Controls 1.0 \n \
+                                ApplicationWindow { \n \
+                                visible: true \n \
+                                title: connectionWindow.title \n \
+                                width: 500 \n \
+                                height: 700 \n \
+                                ConnectionWindow { \n \
+                                id: connectionWindow \n \
+                                anchors.fill: parent \n \
+                                autoSelectInstance: false \n \
+                                applicationSource: \"file:/" + inputs.qml[0].filePath + "\" \n \
+                                instanceFilter: ServiceDiscoveryFilter{ name: \"\" } \n \
+                                }}")
                     file.close()
                 }
                 return cmd;
