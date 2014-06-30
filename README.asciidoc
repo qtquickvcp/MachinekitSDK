@@ -2,3 +2,12 @@ MachinekitSDK
 =============
 
 Qt Creator extension for creating Machinekit applications
+
+
+Install
+~~~~~~~
+
+----
+chmod +x install.sh
+./install.sh <path to QtCreator>
+----
