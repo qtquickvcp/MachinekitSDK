@@ -2,21 +2,34 @@
 #include "bbioconfig.h"
 
 #include <QFileInfo>
+#include <QDebug>
+#include <QQuickItem>
 
 namespace BBIOConfig {
 namespace Internal {
 
-BBIOConfigFile::BBIOConfigFile(BBIOConfig *parent)
+BBIOConfigFile::BBIOConfigFile(BBIOConfig *parent, QQuickView *view)
 {
     m_editor = parent;
+    m_view = view;
+
+    connect(m_view->rootObject(), SIGNAL(modifiedChanged()),
+            this, SIGNAL(changed()));
 }
 
 bool BBIOConfigFile::save(QString *errorString, const QString &fileName, bool autoSave)
 {
     Q_UNUSED(errorString)
-    Q_UNUSED(fileName);
-    Q_UNUSED(autoSave)
-    return false;
+
+    QVariant returnValue;
+    QMetaObject::invokeMethod(m_view->rootObject(), "saveDocument",
+                              Q_RETURN_ARG(QVariant, returnValue),
+                              Q_ARG(QVariant, fileName));
+
+    setDisplayName(m_view->rootObject()->property("currentFileName").toString());
+    setFilePath(fileName);
+
+    return returnValue.toBool();
 }
 
 bool BBIOConfigFile::setContents(const QByteArray &contents)
@@ -42,12 +55,12 @@ QString BBIOConfigFile::mimeType() const
 
 bool BBIOConfigFile::isModified() const
 {
-    return false;
+    return m_view->rootObject()->property("modified").toBool();
 }
 
 bool BBIOConfigFile::isSaveAsAllowed() const
 {
-    return false;
+    return true;
 }
 
 Core::IDocument::ReloadBehavior BBIOConfigFile::reloadBehavior(Core::IDocument::ChangeTrigger state, Core::IDocument::ChangeType type) const
@@ -61,6 +74,7 @@ Core::IDocument::ReloadBehavior BBIOConfigFile::reloadBehavior(Core::IDocument::
 
 bool BBIOConfigFile::reload(QString *errorString, Core::IDocument::ReloadFlag flag, Core::IDocument::ChangeType type)
 {
+    qDebug() << "reload";
     if (flag == FlagIgnore)
         return true;
     if (type == TypePermissions) {

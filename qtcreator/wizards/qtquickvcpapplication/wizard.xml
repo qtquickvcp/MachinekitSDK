@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/****************************************************************************
+****************************************************************************/
+-->
+
+<wizard version="1" kind="class" id="C.QtQuickVcpApplication" category="B.Machinekit"
+    platformIndependent="true">
+    <icon>machinekit.png</icon>
+    <description>Creates a QtQuickVcp based UI for Machinekit.</description>
+    <displayname>QtQuickVcp Application</displayname>;
+    <displaycategory>Machinekit</displaycategory>
+    <files>
+        <file source="project.application/description.ini" target="%ProjectName%.%ApplicationName%/description.ini"/>
+        <file source="project.application/application.qml" target="%ProjectName%.%ApplicationName%/%ApplicationName%.qml" openeditor="true"/>
+    </files>
+    <fieldpagetitle>Application</fieldpagetitle>
+    <fields>
+        <field mandatory="true" name="ProjectName">
+            <fieldcontrol class="QLineEdit" validator='^[^"]+$'
+                          defaulttext="untitled" placeholdertext="Enter the project name"/>
+            <fielddescription>Project name:</fielddescription>
+        </field>
+        <field mandatory="true" name="ApplicationName">
+            <fieldcontrol class="QLineEdit" validator='^[^"]+$'
+                          defaulttext="untitled" placeholdertext="Enter a application name"/>
+            <fielddescription>Application name:</fielddescription>
+        </field>
+        <field mandatory="false" name="ApplicationDescription">
+            <fieldcontrol class="TextEdit"
+                          defaulttext="A awesome QtQuickVcp application" placeholdertext="Enter a application description"/>
+            <fielddescription>Application description:</fielddescription>
+        </field>
+        <field mandatory="true" name="RemoteComponentName">
+            <fieldcontrol class="QLineEdit" validator='^[^"]+$'
+                          defaulttext="default" placeholdertext="Enter a name for the HAL remote component"/>
+            <fielddescription>HAL remote component name:</fielddescription>
+        </field>
+    </fields>
+</wizard>

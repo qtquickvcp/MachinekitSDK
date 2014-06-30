@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/****************************************************************************
+****************************************************************************/
+-->
+
+<wizard version="1" kind="class" id="A.MachinekitHALFile" category="B.Machinekit"
+    platformIndependent="true">
+    <description>Creates a HAL configuration file.</description>
+    <displayname>HAL configuration</displayname>;
+    <displaycategory>Machinekit</displaycategory>
+    <files>
+        <file source="halfile.hal" target="%Name%.hal" openeditor="true"/>
+    </files>
+    <fieldpagetitle>Details</fieldpagetitle>
+    <fields>
+        <field name="Name">
+            <fieldcontrol class="QLineEdit" validator='^[^"]+$' defaulttext="untitled" placeholdertext="Enter a file name"/>
+            <fielddescription>File name:</fielddescription>
+        </field>
+    </fields>
+</wizard>

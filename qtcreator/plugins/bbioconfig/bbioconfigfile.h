@@ -3,6 +3,8 @@
 
 #include <coreplugin/idocument.h>
 
+#include <QQuickView>
+
 namespace BBIOConfig {
 namespace Internal {
 
@@ -13,7 +15,7 @@ class BBIOConfigFile : public Core::IDocument
     Q_OBJECT
 
 public:
-    explicit BBIOConfigFile(BBIOConfig *parent = 0);
+    explicit BBIOConfigFile(BBIOConfig *parent, QQuickView *view);
 
     bool save(QString *errorString, const QString &fileName, bool autoSave);
     bool setContents(const QByteArray &contents);
@@ -33,7 +35,7 @@ public:
 private:
     QString m_mimeType;
     BBIOConfig *m_editor;
-
+    QQuickView *m_view;
 };
 
 } // namespace Internal

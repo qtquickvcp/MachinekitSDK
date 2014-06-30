@@ -1,6 +1,7 @@
 #include "bbioconfig.h"
 #include "bbioconfigfile.h"
 #include "bbioconfigconstants.h"
+#include <fileio.h>
 
 #include <coreplugin/icore.h>
 #include <coreplugin/actionmanager/actionmanager.h>
@@ -29,15 +30,14 @@ BBIOConfig::BBIOConfig(QWidget *parent) :
 {
     setId(Constants::BBIOCONFIG_ID);
 
-    d->file = new BBIOConfigFile(this);
+    qmlRegisterType<FileIO>("FileIO", 1, 0, "File");
 
     d->view = new QQuickView();
     d->container = QWidget::createWindowContainer(d->view);
-    //container->setMinimumSize(200, 200);
-    //container->setMaximumSize(200, 200);
-    //container->setFocusPolicy(Qt::TabFocus);
-    d->view->setSource(QUrl(QStringLiteral("qrc:///bbioconfig/main.qml")));
+    d->view->setSource(QUrl(QStringLiteral("qrc:///bbioconfig/qml/BBIOConfig.qml")));
     d->view->setResizeMode(QQuickView::SizeRootObjectToView);
+
+    d->file = new BBIOConfigFile(this, d->view);
 
     setContext(Core::Context(Constants::BBIOCONFIG_ID));
     setWidget(d->container);
@@ -55,8 +55,15 @@ BBIOConfig::~BBIOConfig()
 
 bool BBIOConfig::open(QString *errorString, const QString &fileName, const QString &realFileName)
 {
-    qDebug() << "file Name:" << fileName;
-    return true;
+    QVariant returnValue;
+    QMetaObject::invokeMethod(d->view->rootObject(), "openDocument",
+                              Q_RETURN_ARG(QVariant, returnValue),
+                              Q_ARG(QVariant, fileName));
+
+    d->file->setDisplayName(d->view->rootObject()->property("currentFileName").toString());
+    d->file->setFilePath(fileName);
+
+    return returnValue.toBool();
 }
 
 Core::IDocument *BBIOConfig::document()

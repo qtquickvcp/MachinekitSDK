@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>%ProjectName%.%ApplicationName%/%ApplicationName%.qml</file>
+        <file>%ProjectName%.%ApplicationName%/description.ini</file>
+    </qresource>
+</RCC>

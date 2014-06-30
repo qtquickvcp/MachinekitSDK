@@ -33,7 +33,7 @@ BBIOConfigActionHandler::BBIOConfigActionHandler(QObject *parent):
 
 void BBIOConfigActionHandler::createActions()
 {
-    registerNewAction(ZoomIn, Constants::ACTION_ZOOM_IN, tr("Zoom In"),
+/*    registerNewAction(ZoomIn, Constants::ACTION_ZOOM_IN, tr("Zoom In"),
                       QKeySequence(tr("Ctrl++")));
     registerNewAction(ZoomOut, Constants::ACTION_ZOOM_OUT, tr("Zoom Out"),
                       QKeySequence(tr("Ctrl+-")));
@@ -47,6 +47,7 @@ void BBIOConfigActionHandler::createActions()
                       QKeySequence(tr("Ctrl+]")));
     registerNewAction(ToggleAnimation, Constants::ACTION_TOGGLE_ANIMATION, tr("Toggle Animation"),
                       QKeySequence());
+                      */
 }
 
 void BBIOConfigActionHandler::actionTriggered(int supportedAction)

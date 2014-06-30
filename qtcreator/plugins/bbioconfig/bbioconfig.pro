@@ -1,6 +1,7 @@
 DEFINES += BBIOCONFIG_LIBRARY
 
 include(../../../paths.pri)
+include(../../../3rdparty/BBIOConfig/BBIOConfig.pri)
 
 # BBIOConfig files
 
@@ -65,6 +66,6 @@ RESOURCES += \
     bbioconfig.qrc
 
 OTHER_FILES += \
-    main.qml \
     test.bbio
 
+INSTALLS =

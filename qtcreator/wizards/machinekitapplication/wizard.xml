@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/****************************************************************************
+****************************************************************************/
+-->
+<wizard version="1" kind="project"
+        featuresRequired="Qbs.QbsSupport" firstpage="1"
+        id="A.MachinekitApplication" category="B.Machinekit">
+    <icon>machinekit.png</icon>
+    <description>Creates a Machinekit application.</description>
+    <displayname>Machinekit Application</displayname>;
+    <displaycategory>Machinekit</displaycategory>
+    <files>
+        <file source="project.hal" target="%ProjectName%.hal" openeditor="true"/>
+        <file source="project.qbs" target="%ProjectName%.qbs" openproject="true"/>
+        <file source="project.bbio" target="%ProjectName%.bbio"/>
+        <file source="machinekit.ini"/>
+    </files>
+    <fieldpagetitle>Details</fieldpagetitle>
+    <fields>
+        <field name="REMOTECOMPONENT">
+            <fieldcontrol class="QCheckBox" defaultvalue="true"/>
+            <fielddescription>Create a remote component</fielddescription>
+        </field>
+        <field name="HALTALK">
+            <fieldcontrol class="QCheckBox" defaultvalue="true"/>
+            <fielddescription>Start haltalk</fielddescription>
+        </field>
+        <field name="BBIO">
+            <fieldcontrol class="QCheckBox" defaultvalue="true"/>
+            <fielddescription>Create BBIO file</fielddescription>
+        </field>
+        <field name="MACHINEKITINI">
+            <fieldcontrol class="QCheckBox"/>
+            <fielddescription>Create machinekit.ini file</fielddescription>
+        </field>
+    </fields>
+</wizard>

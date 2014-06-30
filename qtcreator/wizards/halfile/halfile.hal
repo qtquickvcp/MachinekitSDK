@@ -1,0 +1,49 @@
+# set logging to 'pretty high'
+log rt 5
+log user 5
+
+#load universal IO file
+loadusr -W config-pin ServoControl.bbio
+
+# start haltalk server
+loadusr -W haltalk --ini haltalk.ini
+
+# start config server
+loadusr -W configserver.py apps.ini
+
+loadrt threads period1=1000000 name1=thread
+#loadrt hal_bb_gpio output_pins=116,118 input_pins=216
+loadrt hal_pru_generic prucode=/home/linuxcnc/machinekit/rtlib/xenomai/pru_generic.bin pru=1 num_stepgens=0 num_pwmgens=1
+loadrt scale count=1
+
+# ################################################
+# THREADS
+# ################################################
+addf bb_gpio.read                         thread
+addf bb_gpio.write                        thread
+addf scale.0                              thread
+
+start
+
+# ################################################
+# REMOTE COMPONENT
+# ################################################
+# wait the halcmd script until the UI has created the remote component 'motorctrl':
+# waitexists servoctrl
+
+# OR preconfigure the remote component like so
+# in this case no waiting required
+# pin count, name, type, direction must match exactly what
+# is in the GUI
+newcomp servoctrl timer=100 acceptdefaults
+newpin  servoctrl servoctrl.position    float out
+ready   servoctrl
+
+setp hal_pru_generic.pwmgen.00.pwm_period       10000000
+
+# PRU1.out1
+setp hal_pru_generic.pwmgen.00.out.00.pin       97
+setp hal_pru_generic.pwmgen.00.out.00.enable    1
+setp hal_pru_generic.pwmgen.00.out.00.value     0.15
+
+#net
