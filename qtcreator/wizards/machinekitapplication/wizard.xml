@@ -22,6 +22,11 @@
             <fieldcontrol class="QCheckBox" defaultvalue="true"/>
             <fielddescription>Create a remote component</fielddescription>
         </field>
+        <field mandatory="false" name="RemoteComponentName">
+            <fieldcontrol class="TextEdit"
+                          defaulttext="default" placeholdertext="Enter a name for the remote component"/>
+            <fielddescription>Remote component name:</fielddescription>
+        </field>
         <field name="HALTALK">
             <fieldcontrol class="QCheckBox" defaultvalue="true"/>
             <fielddescription>Start haltalk</fielddescription>

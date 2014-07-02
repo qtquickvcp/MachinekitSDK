@@ -10,5 +10,4 @@ MachinekitApplication {
     configFiles: ["%ProjectName%.ini"]
     machinekitIni: "%ProjectName%.ini"
 @endif
-    type: "machinekit"
 }
