@@ -7,27 +7,16 @@ Product {
     property stringList pythonFiles: []
     property stringList compFiles: []
     property stringList otherFiles: []
-    /*property stringList uiFiles: {
-        var files = []
-        for (var i = 0; i < uis.length; ++i) {
-            files.push(uis[i][1])
-        }
-        return files
-    }*/
-
-    property string appsIni: ""
     property string machinekitIni: ""
+    property string linuxcncIni: ""
     property path projectDir: "/home/machinekit/projects"
     property path targetDir: projectDir + "/" + product.name
-    property path machinekitDir: "/home/machinekit/machinekit"
     property string uiDir: "uis"
     property int debugLevel: 5
-    property string applicationType: "hal"
     property stringList uis: []
 
     name: "MachinekitApplication"
     type: "application"
-    //qbsSearchPaths: "../"
 
     qbs.installPrefix: targetDir
 
@@ -36,10 +25,8 @@ Product {
     Group {
         name: "HAL files"
         condition: ((files != undefined) && (files.length != 0))
-        //fileTagsFilter: ["hal"]
         files: halFiles
         overrideTags: false
-        //fileTags: ["hal"]
         qbs.install: true
         qbs.installDir: ""
     }
@@ -68,7 +55,7 @@ Product {
         files: pythonFiles
         overrideTags: false
         qbs.install: true
-        qbs.installDir: "python"
+        qbs.installDir: ""
     }
 
     Group {
@@ -77,7 +64,7 @@ Product {
         files: compFiles
         overrideTags: false
         qbs.install: true
-        qbs.installDir: "comp"
+        qbs.installDir: ""
     }
 
     Group {
@@ -101,12 +88,6 @@ Product {
     Group {
         condition: true
         fileTagsFilter: ["application"]
-        qbs.install: true
-        qbs.installDir: ""
-    }
-    Group {
-        condition: true
-        fileTagsFilter: ["appconfig"]
         qbs.install: true
         qbs.installDir: ""
     }
