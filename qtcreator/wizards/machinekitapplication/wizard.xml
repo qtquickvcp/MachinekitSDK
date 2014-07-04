@@ -15,6 +15,7 @@
         <file source="project.qbs" target="%ProjectName%.qbs" openproject="true"/>
         <file source="project.bbio" target="%ProjectName%.bbio"/>
         <file source="machinekit.ini"/>
+        <file source="linuxcnc.ini" target="%ProjectName%.ini"/>
     </files>
     <fieldpagetitle>Details</fieldpagetitle>
     <fields>
@@ -34,6 +35,10 @@
         <field name="BBIO">
             <fieldcontrol class="QCheckBox" defaultvalue="true"/>
             <fielddescription>Create BBIO file</fielddescription>
+        </field>
+        <field name="LINUXCNCINI">
+            <fieldcontrol class="QCheckBox"/>
+            <fielddescription>Create LinuxCNC configuration file</fielddescription>
         </field>
         <field name="MACHINEKITINI">
             <fieldcontrol class="QCheckBox"/>
