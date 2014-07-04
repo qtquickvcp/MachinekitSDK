@@ -86,10 +86,18 @@ Module {
                     file.writeLine("")
                     file.writeLine("")
 
-                    file.writeLine("rip_environment()")
+                    if (product.machinekitDir == "") {
+                        file.writeLine("rip_environment()")
+                    } else {
+                        file.writeLine("rip_environment(" + product.machinekitDir + ")")
+                    }
                     file.writeLine("launcher = importlib.import_module('machinekit.launcher')")
                     file.writeLine("")
                     file.writeLine("launcher.register_exit_handler()")
+
+                    if (product.display !== "") {
+                        file.writeLine("os.environ['DISPLAY'] = '" + product.display + "'")
+                    }
 
                     file.writeLine("launcher.set_debug_level(" + product.debugLevel + ")")
 
@@ -112,18 +120,20 @@ Module {
                         file.writeLine("    launcher.install_comp('" + product.compFiles[i] + "')")
                     }
 
-                    var appList = ""
-                    for (var i = 0; i < product.uis.length; ++i) {
-                        appList += " '" + product.uiDir + "/" + FileInfo.fileName(product.uis[i]) + "'"
+                    if (product.enableRemote) {
+                        var appList = ""
+                        for (var i = 0; i < product.uis.length; ++i) {
+                            appList += " '" + product.uiDir + "/" + FileInfo.fileName(product.uis[i]) + "'"
+                        }
+                        file.writeLine("    launcher.start_process(\"configserver" + appList +"\")")
                     }
-                    file.writeLine("    launcher.start_process(\"configserver" + appList +"\")")
-
-                    file.writeLine("    launcher.start_realtime()")
 
                     if (product.linuxcncIni != "") {    // start linuxcnc
                         file.writeLine("    launcher.start_process('linuxcnc " + product.linuxcncIni + "')")
                     }
-                    else { // load hal files
+                    else { // start realtime and load hal files
+                        file.writeLine("    launcher.start_realtime()")
+
                         for (var i = 0; i < product.halFiles.length; ++i) {
                             file.writeLine("    launcher.load_hal_file('" + product.halFiles[i] + "')")
                         }

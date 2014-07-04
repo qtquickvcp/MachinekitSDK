@@ -7,13 +7,17 @@ Product {
     property stringList pythonFiles: []
     property stringList compFiles: []
     property stringList otherFiles: []
+    property stringList uis: []
+    property string uiDir: "uis"
     property string machinekitIni: ""
     property string linuxcncIni: ""
+    property string display: ""
+    property bool enableRemote: true
     property path projectDir: "/home/machinekit/projects"
+    property path machinekitDir: ""
     property path targetDir: projectDir + "/" + product.name
-    property string uiDir: "uis"
     property int debugLevel: 5
-    property stringList uis: []
+
 
     name: "MachinekitApplication"
     type: "application"
