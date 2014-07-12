@@ -70,7 +70,7 @@ Item {
         if ((pinNumber != 0) && (portNumber != 0))  // this fixed the wrong behaviour when config mode is switched
             dataChanged()
     }
-
+    
     function getPinmuxActive() {
         return (loadedOverlays.indexOf(overlay) !== -1) && ((functions.length > 0) && (functions[0] !== "reserved"))
     }
@@ -155,6 +155,8 @@ Item {
     width: 100
     height: 62
 
+<<<<<<< HEAD
+=======
     Timer {
         property color previewColor: "white"
         property bool x: true
@@ -165,6 +167,7 @@ Item {
         onTriggered: x = !x
     }
 
+>>>>>>> adf09281281a5175cf4009aa763ec3f41b1f5e19
     ToolTip {
         anchors.left: rightSide?parent.right:undefined
         anchors.leftMargin: parent.width*0.8
