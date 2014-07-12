@@ -29,8 +29,9 @@ Item {
     property string type: "GPIO"                                                        // current selected type
     property string overlay: "cape-test"                                                // overlay that is necessary for pinmuxing
     property var    loadedOverlays: ["cape-test", "cape-test2"]                         // currently loaded overlay
-    property bool   pinmuxActive: (loadedOverlays.indexOf(overlay) !== -1)              // determines wheter the pinmux is active or not
+    property bool   pinmuxActive: getPinmuxActive()                                     // determines wheter the pinmux is active or not
     property string previewType: ""                                                     // type for preview mode
+    property string previewOverlay: ""                                                  // overlay for preview mode
     property bool   previewEnabled: false                                               // enabled the preview mdoe
     property bool   previewActive:  getPreviewActive()                                  // holds whether the preview is active or not
     property string gpioDirection: "unmodified"                                         // type of the gpio pin (in or out)
@@ -53,13 +54,26 @@ Item {
 
     property bool displayUneditablePins: true
 
-
     signal previewEntered(string type)
     signal previewExited()
+    signal dataChangedUnfiltered()
+    signal dataChanged()
 
-    id: main
-    width: 100
-    height: 62
+    Component.onCompleted: {
+        onTypeChanged.connect(dataChangedUnfiltered)
+        onGpioDirectionChanged.connect(dataChangedUnfiltered)
+        onGpioValueChanged.connect(dataChangedUnfiltered)
+        textInput.onTextChanged.connect(dataChangedUnfiltered)
+    }
+
+    onDataChangedUnfiltered: {
+        if ((pinNumber != 0) && (portNumber != 0))  // this fixed the wrong behaviour when config mode is switched
+            dataChanged()
+    }
+
+    function getPinmuxActive() {
+        return (loadedOverlays.indexOf(overlay) !== -1) && ((functions.length > 0) && (functions[0] !== "reserved"))
+    }
 
     function getEditable() {
         switch (configMode) {
@@ -96,7 +110,12 @@ Item {
             searchValue = main.gpioValue
         }
         else if (main.previewActive) {
-            searchValue = main.previewType
+            if (main.previewType != "")
+                searchValue = main.previewType
+            else if (overlayPreviewTimer.x)     // previewing an overlay -> blinking
+                 return "white"
+            else
+                searchValue = main.defaultFunction
         }
         else if (main.pinmuxActive) {
             searchValue = main.type
@@ -117,6 +136,9 @@ Item {
 
     function getPreviewActive() {
 
+        if (previewEnabled && (previewType == "") && (previewOverlay == overlay))
+            return true
+
         if ((!previewEnabled) || (previewType == ""))
             return false
 
@@ -129,6 +151,20 @@ Item {
         return false;
     }
 
+    id: main
+    width: 100
+    height: 62
+
+    Timer {
+        property color previewColor: "white"
+        property bool x: true
+        id: overlayPreviewTimer
+        interval: 400
+        running: previewActive && (previewOverlay != "")
+        repeat: true
+        onTriggered: x = !x
+    }
+
     ToolTip {
         anchors.left: rightSide?parent.right:undefined
         anchors.leftMargin: parent.width*0.8
@@ -139,7 +175,7 @@ Item {
         color: "white"
         border.color: "black"
 
-        visible: (comboBox.hovered || mouseArea.containsMouse) && !(previewEnabled && (previewType == ""))
+        visible: (comboBox.hovered || comboBox2.hovered || comboBox3.hovered || mouseArea.containsMouse) && !(previewEnabled && (previewType == ""))
         z: 1000
 
         Text {
