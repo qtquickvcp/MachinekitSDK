@@ -26,6 +26,7 @@
       <item> newsig </item>
       <item> ready </item>
       <item> net </item>
+      <item> log </item>
     </list>
     <list name="types">
       <item> u32 </item>
