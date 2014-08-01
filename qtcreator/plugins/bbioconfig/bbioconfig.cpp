@@ -28,8 +28,6 @@ BBIOConfig::BBIOConfig(QWidget *parent) :
     IEditor(parent),
     d(new BBIOConfigPrivate)
 {
-    setId(Constants::BBIOCONFIG_ID);
-
     qmlRegisterType<FileIO>("FileIO", 1, 0, "File");
 
     d->view = new QQuickView();
@@ -55,6 +53,9 @@ BBIOConfig::~BBIOConfig()
 
 bool BBIOConfig::open(QString *errorString, const QString &fileName, const QString &realFileName)
 {
+    Q_UNUSED(errorString)
+    Q_UNUSED(realFileName)
+
     QVariant returnValue;
     QMetaObject::invokeMethod(d->view->rootObject(), "openDocument",
                               Q_RETURN_ARG(QVariant, returnValue),

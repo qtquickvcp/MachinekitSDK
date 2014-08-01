@@ -1,5 +1,6 @@
 #include "bbioconfigfile.h"
 #include "bbioconfig.h"
+#include "bbioconfigconstants.h"
 
 #include <QFileInfo>
 #include <QDebug>
@@ -10,6 +11,7 @@ namespace Internal {
 
 BBIOConfigFile::BBIOConfigFile(BBIOConfig *parent, QQuickView *view)
 {
+    setId(Constants::BBIOCONFIG_ID);
     m_editor = parent;
     m_view = view;
 
@@ -20,6 +22,7 @@ BBIOConfigFile::BBIOConfigFile(BBIOConfig *parent, QQuickView *view)
 bool BBIOConfigFile::save(QString *errorString, const QString &fileName, bool autoSave)
 {
     Q_UNUSED(errorString)
+    Q_UNUSED(autoSave)
 
     QVariant returnValue;
     QMetaObject::invokeMethod(m_view->rootObject(), "saveDocument",
