@@ -4,7 +4,7 @@
 ****************************************************************************/
 -->
 <wizard version="1" kind="project"
-        class="qmakeproject" firstpage="1"
+        class="qmakeproject" firstpage="10"
         id="A.QtQuickVcpProject" category="B.Machinekit">
     <icon>machinekit.png</icon>
     <description>Creates a QtQuickVcp based UI for Machinekit.</description>
