@@ -4,10 +4,4 @@ MachinekitSDK
 Qt Creator extension for creating Machinekit applications
 
 
-Install
-~~~~~~~
-
-----
-chmod +x install.sh
-./install.sh <path to QtCreator>
-----
+See the wiki for details: https://github.com/strahlex/MachinekitSDK/wiki/Getting-Started-with-the-Machinekit-SDK#using-the-machinetalk-preview-virtualbox-image
