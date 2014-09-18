@@ -81,7 +81,7 @@ Module {
                     file.writeLine("            command = '. ' + scriptFilePath")
                     file.writeLine("")
                     file.writeLine("        if (command is None):")
-                    file.writeLine("            sys.stderr.write('Unable to rip environment')")
+                    file.writeLine("            sys.stderr.write('Unable to rip environment\\n')")
                     file.writeLine("            sys.exit(1)")
                     file.writeLine("    else:")
                     file.writeLine("        command = '. ' + path + '/scripts/rip-environment'")
