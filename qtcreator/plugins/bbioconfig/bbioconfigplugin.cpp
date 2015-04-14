@@ -95,5 +95,5 @@ void BBIOConfigPlugin::triggerAction()
 } // namespace Internal
 } // namespace BBIOConfig
 
-Q_EXPORT_PLUGIN2(BBIOConfig, BBIOConfigPlugin)
+//Q_EXPORT_PLUGIN2(BBIOConfig, BBIOConfigPlugin)
 
