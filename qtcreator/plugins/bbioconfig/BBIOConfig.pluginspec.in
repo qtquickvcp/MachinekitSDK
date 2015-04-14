@@ -1,9 +1,0 @@
-<plugin name=\"BBIOConfig\" version=\"0.0.1\" compatVersion=\"0.0.1\">
-    <vendor>Machinekit</vendor>
-    <copyright>(C) Alexander Rössler</copyright>
-    <license>LGPL</license>
-    <description>A plugin for edition BeagleBone universal IO files</description>
-    <url>http://machinekit.io</url>
-    $$dependencyList
-</plugin>
-
