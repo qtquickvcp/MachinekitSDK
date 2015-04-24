@@ -35,5 +35,6 @@ HalApplicationWindow {
         anchors.centerIn: parent
         name: "button"
         text: "Hello World"
+        checkable: true
     }
 }
