@@ -3,7 +3,7 @@ import qbs
 MachinekitApplication {
     name: "%ProjectName%"
     halFiles: ["%ProjectName%.hal"]
-@if "%{BBIO}" == "true"
+@if "%BBIO%" == "true"
     bbioFiles: ["%ProjectName%.bbio"]
 @endif
 @if "%MACHINEKITINI%" == "true" && "%LINUXCNCINI%" == "true"
