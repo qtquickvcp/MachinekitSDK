@@ -40,7 +40,7 @@ Module {
         multiplex: true
 
         Artifact {
-            fileName: "run.py"
+            filePath: "run.py"
             fileTags: ["machinekit", "application"]
         }
 
@@ -58,9 +58,9 @@ Module {
                     file.writeLine("import subprocess")
                     file.writeLine("import importlib")
                     file.writeLine("from time import *")
+                    file.writeLine("from machinekit import launcher")
                     file.writeLine("")
-                    file.writeLine("")
-                    file.writeLine("def rip_environment(path=None, force=False):")
+/*                    file.writeLine("def rip_environment(path=None, force=False):")
                     file.writeLine("    if os.getenv('EMC2_PATH') is not None:    # check if already ripped")
                     file.writeLine("        return")
                     file.writeLine("")
@@ -101,6 +101,7 @@ Module {
                         file.writeLine("rip_environment(" + product.machinekitDir + ")")
                     }
                     file.writeLine("launcher = importlib.import_module('machinekit.launcher')")
+*/
                     file.writeLine("")
                     file.writeLine("launcher.register_exit_handler()")
 
@@ -138,13 +139,15 @@ Module {
                     }
 
                     if (product.linuxcncIni != "") {    // start linuxcnc
-                        file.writeLine("    launcher.start_process('linuxcnc " + product.linuxcncIni + "')")
+//                        file.writeLine("    launcher.start_process('linuxcnc " + product.linuxcncIni + "')")
+                        file.writeLine("    launcher.start_process('halrun -i " + product.linuxcncIni + " -I " + product.halFiles[0] + "')")
                     }
                     else { // start realtime and load hal files
-                        file.writeLine("    launcher.start_realtime()")
+//                        file.writeLine("    launcher.start_realtime()")
 
                         for (var i = 0; i < product.halFiles.length; ++i) {
-                            file.writeLine("    launcher.load_hal_file('" + product.halFiles[i] + "')")
+//                            file.writeLine("    launcher.load_hal_file('" + product.halFiles[i] + "')")
+                            file.writeLine("    launcher.start_process('halrun -I " + product.halFiles[i] + "')")
                         }
                     }
 
