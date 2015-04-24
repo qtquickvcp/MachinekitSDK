@@ -1,0 +1,157 @@
+{
+    "version": 1,
+    "kind": "project",
+    "id": "A.MachinekitApplication",
+    "category": "B.Machinekit",
+    "trDescription": "Creates a Machinekit application.",
+    "trDisplayName": "Machinekit Application",
+    "trDisplayCategory": "Machinekit",
+    "icon": "machinekit.png",
+    "featuresRequired": [ "Plugin.BBIOConfig" ],
+
+    "options":
+    [
+        { "key": "ProFileName", "value": "%{JS: Util.fileName('%{ProjectDirectory}/%{ProjectName}', 'pro')}" },
+        { "key": "IsTopLevelProject", "value": "%{JS: ('%{Exists:ProjectExplorer.Profile.Ids}') ? '' : 'yes'}" },
+        { "key": "BBIO", "value": "%{JS: ('%{BBBIOFILETYPE}' === '' ) ? '' : 'true'}" }
+    ],
+
+    "pages":
+    [
+        {
+            "trDisplayName": "Project Location",
+            "trShortTitle": "Location",
+            "typeId": "Project"
+        },
+        {
+            "trDisplayName": "Kit Selection",
+            "trShortTitle": "Kits",
+            "typeId": "Kits",
+            "enabled": "%{IsTopLevelProject}",
+            "data": { "projectFilePath": "%{ProFileName}" }
+        },
+        {
+            "trDisplayName": "Options",
+            "trShortTitle": "Options",
+            "typeId": "Fields",
+            "data":
+            [
+                {
+                    "name": "REMOTECOMPONENT",
+                    "trDisplayName": "Create a remote component",
+                    "type": "CheckBox",
+                    "span": true,
+                    "data":
+                    {
+                        "checkedValue": "true",
+                        "uncheckedValue": "",
+                        "checked": true
+                    }
+                },
+                {
+                    "name": "RemoteComponentName",
+                    "trDisplayName": "Remont component name:",
+                    "type": "LineEdit",
+                    "enabled": "%{JS: ( '%{REMOTECOMPONENT}' === 'true' ) ? 'yes' : ''}",
+                    "mandatory": false,
+                    "data":
+                    {
+                        "trText": "default",
+                        "trDisabledText": " "
+                    }
+                },
+                {
+                    "name": "HALTALK",
+                    "trDisplayName": "Start haltalk",
+                    "type": "CheckBox",
+                    "span": true,
+                    "data":
+                    {
+                        "checkedValue": "true",
+                        "uncheckedValue": "",
+                        "checked": true
+                    }
+                },
+                {
+                    "name": "BBBIOFILETYPE",
+                    "trDisplayName": "BBIO file variant",
+                    "type": "ComboBox",
+                    "data":
+                    {
+                        "items": [ { "trKey": "<None>", "value": "" },
+                                   "Empty", "Cramps" ]
+                    }
+                },
+                {
+                    "name": "LINUXCNCINI",
+                    "trDisplayName": "Create LinuxCNC configuration file",
+                    "type": "CheckBox",
+                    "span": true,
+                    "data":
+                    {
+                        "checkedValue": "true",
+                        "uncheckedValue": "",
+                        "checked": false
+                    }
+                },
+                {
+                    "name": "MACHINEKITINI",
+                    "trDisplayName": "Create machinekit.ini file",
+                    "type": "CheckBox",
+                    "span": true,
+                    "data":
+                    {
+                        "checkedValue": "true",
+                        "uncheckedValue": "",
+                        "checked": true
+                    }
+                }
+            ]
+        },
+        {
+            "trDisplayName": "Project Management",
+            "trShortTitle": "Summary",
+            "typeId": "Summary"
+        }
+    ],
+    "generators":
+    [
+        {
+            "typeId": "File",
+            "data":
+            [
+                {
+                    "source": "project.qbs",
+                    "target": "%{TargetPath}/%{ProjectName}.qbs",
+                    "openAsProject": true
+                },
+                {
+                    "source": "project.hal",
+                    "target": "%{TargetPath}/%{ProjectName}.hal",
+                    "openInEditor": true
+                },
+                {
+                    "source": "project.bbio",
+                    "target": "%{TargetPath}/%{ProjectName}.bbio",
+                    "condition": "%{JS: ('%{BBBIOFILETYPE}' === 'Empty' ) ? 'yes' : ''}",
+                    "openInEditor": true
+                },
+                {
+                    "source": "cramps.bbio",
+                    "target": "%{TargetPath}/%{ProjectName}.bbio",
+                    "condition": "%{JS: ('%{BBBIOFILETYPE}' === 'Cramps' ) ? 'yes' : ''}"
+                },
+                {
+                    "source": "machinekit.ini",
+                    "target": "%{TargetPath}/machinekit.ini",
+                    "condition": "%{JS: ('%{MACHINEKITINI}' === 'true') ? 'yes' : ''}"
+                },
+                {
+                    "source": "linuxcnc.ini",
+                    "target": "%{TargetPath}/%{ProjectName}.ini",
+                    "condition": "%{JS: ('%{LINUXCNCINI}' === 'true') ? 'yes' : ''}"
+                }
+            ]
+        }
+    ]
+}
