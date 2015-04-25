@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "kind": "class",
+    "id": "B.MachinekitBBIOFile",
+    "category": "B.Machinekit",
+    "trDescription": "Creates a BB universal IO configuration file.",
+    "trDisplayName": "BB universal IO configuration",
+    "trDisplayCategory": "Machinekit",
+    "icon": "",
+    "platformIndependent": true,
+    "featuresRequired": [ ],
+
+    "pages" :
+    [
+        {
+            "trDisplayName": "Location",
+            "trShortTitle": "Location",
+            "typeId": "File"
+        },
+        {
+            "trDisplayName": "Options",
+            "trShortTitle": "Options",
+            "typeId": "Fields",
+            "data":
+            [
+                {
+                    "name": "BBBIOFILETYPE",
+                    "trDisplayName": "BBIO file variant",
+                    "type": "ComboBox",
+                    "data":
+                    {
+                        "items": [ { "trKey": "Empty", "value": "" },
+                           "Cramps" ]
+                    }
+                }
+            ]
+        },
+        {
+            "trDisplayName": "Project Management",
+            "trShortTitle": "Summary",
+            "typeId": "Summary"
+        }
+    ],
+    "generators" :
+    [
+        {
+            "typeId": "File",
+            "data":
+            [
+                {
+                    "source": "bbiofile.bbio",
+                    "target": "%{JS: Util.fileName('%{TargetPath}.bbio",
+                    "openInEditor": true,
+                    "condition": "%{JS: ('%{BBBIOFILETYPE}' === 'Empty' ) ? 'yes' : ''}"
+                },
+                {
+                    "source": "cramps.bbio",
+                    "target": "%{JS: Util.fileName('%{TargetPath}.bbio",
+                    "condition": "%{JS: ('%{BBBIOFILETYPE}' === 'Cramps' ) ? 'yes' : ''}"
+                }
+            ]
+        }
+    ]
+}

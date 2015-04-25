@@ -1,0 +1,11 @@
+{
+    \"Name\" : \"BBIOConfig\",
+    \"Version\" : \"0.0.1\",
+    \"CompatVersion\" : \"0.0.1\",
+    \"Vendor\" : \"Machinekit\",
+    \"Copyright\" : \"(C) Alexander Rössler\",
+    \"License\" : \"LGPL\",
+    \"Description\" : \"A plugin for edition BeagleBone universal IO files\",
+    \"Url\" : \"http://machinekit.io\",
+    $$dependencyList
+}
