@@ -8,13 +8,13 @@ MachinekitApplication {
 @endif
 @if "%{MACHINEKITINI}" == "true" && "%{LINUXCNCINI}" == "true"
     configFiles: ["%{ProjectName}.ini", "machinekit.ini"]
-    machinekitIni: "machinekit.ini"
-    linuxcncIni: "%{ProjectName}.ini"
+    machinekitIni: ["machinekit.ini"]
+    linuxcncIni: ["%{ProjectName}.ini"]
 @elsif "%{MACHINEKITINI}" == "true"
     configFiles: ["machinekit.ini"]
-    machinekitIni: "machinekit.ini"
+    machinekitIni: ["machinekit.ini"]
 @elsif "%{LINUXCNCINI}" == "true"
     configFiles: ["%{ProjectName}.ini"]
-    linuxcncIni: "%{ProjectName}.ini"
+    linuxcncIni: ["%{ProjectName}.ini"]
 @endif
 }
