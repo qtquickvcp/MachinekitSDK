@@ -117,7 +117,7 @@ Module {
 
                     file.writeLine("os.chdir(os.path.dirname(os.path.realpath(__file__)))")
                     file.writeLine("c = config.Config()")
-                    file.writeLine("os.environ['"MACHINEKIT_INI"'] = c.MACHINEKIT_INI")
+                    file.writeLine('os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI')
 
                     file.writeLine("")
                     file.writeLine("try:")
