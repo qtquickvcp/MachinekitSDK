@@ -138,7 +138,8 @@ Module {
                         for (var i = 0; i < product.uis.length; ++i) {
                             appList += " '" + product.uiDir + "/" + FileInfo.fileName(product.uis[i]) + "'"
                         }
-                        file.writeLine("    launcher.start_process(\"configserver" + appList +"\")")
+//                        file.writeLine("    launcher.start_process(\"configserver -n " + product.name + appList +"\")")
+                        file.writeLine("    launcher.start_process(\"configserver -n " + product.name + " " + product.targetDir + "_qvcp\")")
                     }
 
                     if (product.linuxcncIni != "") {    // start linuxcnc
@@ -173,4 +174,3 @@ Module {
             }
         }
 }
-

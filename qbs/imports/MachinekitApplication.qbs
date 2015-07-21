@@ -10,6 +10,7 @@ Product {
     property stringList uis: []
     property string uiDir: "uis"
     property string machinekitIni: ""
+    property string launcherIni: ""
     property string linuxcncIni: ""
     property string display: ""
     property bool enableRemote: true
