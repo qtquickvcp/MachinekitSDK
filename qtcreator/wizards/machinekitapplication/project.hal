@@ -2,12 +2,6 @@
 log rt 5
 log user 5
 
-@if "%{HALTALK}" == "true"
-# start haltalk server
-# add -d or -d -d to log message transactions
-loadusr -W haltalk
-@endif
-
 loadrt threads period1=1000000 name1=thread
 
 # ################################################
@@ -31,3 +25,10 @@ newcomp %{RemoteComponentName} timer=100 acceptdefaults
 newpin  %{RemoteComponentName} %{RemoteComponentName}.button    bit out
 ready   %{RemoteComponentName}
 @endif
+
+@if "%{HALTALK}" == "true"
+# start haltalk server
+# add -d or -d -d to log message transactions
+loadusr -W haltalk
+@endif
+

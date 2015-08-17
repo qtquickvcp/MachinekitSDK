@@ -103,6 +103,18 @@
                     {
                         "checkedValue": "true",
                         "uncheckedValue": "",
+                        "checked": false
+                    }
+                },
+                {
+                    "name": "LAUNCHERINI",
+                    "trDisplayName": "Create launcher.ini file",
+                    "type": "CheckBox",
+                    "span": true,
+                    "data":
+                    {
+                        "checkedValue": "true",
+                        "uncheckedValue": "",
                         "checked": true
                     }
                 }
@@ -145,6 +157,11 @@
                     "source": "machinekit.ini",
                     "target": "%{TargetPath}/machinekit.ini",
                     "condition": "%{JS: ('%{MACHINEKITINI}' === 'true') ? 'yes' : ''}"
+                },
+                {
+                    "source": "launcher.ini",
+                    "target": "%{TargetPath}/launcher.ini",
+                    "condition": "%{JS: ('%{LAUNCHERINI}' === 'true') ? 'yes' : ''}"
                 },
                 {
                     "source": "linuxcnc.ini",

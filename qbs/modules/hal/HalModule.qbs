@@ -59,6 +59,7 @@ Module {
                     file.writeLine("import importlib")
                     file.writeLine("from time import *")
                     file.writeLine("from machinekit import launcher")
+                    file.writeLine("from machinekit import config")
                     file.writeLine("")
 /*                    file.writeLine("def rip_environment(path=None, force=False):")
                     file.writeLine("    if os.getenv('EMC2_PATH') is not None:    # check if already ripped")
@@ -109,12 +110,14 @@ Module {
                         file.writeLine("os.environ['DISPLAY'] = '" + product.display + "'")
                     }
 
-                    file.writeLine("launcher.set_debug_level(" + product.debugLevel + ")")
+//                    file.writeLine("launcher.set_debug_level(" + product.debugLevel + ")")
 
                     if (product.machinekitIni != "")
                         file.writeLine("launcher.set_machinekit_ini('" + product.machinekitIni +"')")
 
                     file.writeLine("os.chdir(os.path.dirname(os.path.realpath(__file__)))")
+                    file.writeLine("c = config.Config()")
+                    file.writeLine('os.environ["MACHINEKIT_INI"] = c.MACHINEKIT_INI')
 
                     file.writeLine("")
                     file.writeLine("try:")
@@ -135,7 +138,8 @@ Module {
                         for (var i = 0; i < product.uis.length; ++i) {
                             appList += " '" + product.uiDir + "/" + FileInfo.fileName(product.uis[i]) + "'"
                         }
-                        file.writeLine("    launcher.start_process(\"configserver" + appList +"\")")
+//                        file.writeLine("    launcher.start_process(\"configserver -n " + product.name + appList +"\")")
+                        file.writeLine("    launcher.start_process(\"configserver -n " + product.name + " " + product.targetDir + "_qvcp\")")
                     }
 
                     if (product.linuxcncIni != "") {    // start linuxcnc
@@ -170,4 +174,3 @@ Module {
             }
         }
 }
-
