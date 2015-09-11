@@ -2,6 +2,7 @@
 QTCREATORDIR=$1/Tools/QtCreator
 TARGETDIR=$QTCREATORDIR/share/qtcreator/qbs
 SYNTAXDIR=~/.config/QtProject/qtcreator/generic-highlighter/
+WIZARDDIR=$QTCREATORDIR/share/qtcreator/templates/wizards/
 
 cd qbs
 
@@ -19,4 +20,8 @@ cd qtcreator
 cd syntax
 mkdir -p $SYNTAXDIR
 cp -v *.* $SYNTAXDIR
+cd ..
+
+cd wizards
+cp -v -r * $WIZARDDIR
 cd ..
