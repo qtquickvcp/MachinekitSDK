@@ -39,6 +39,8 @@ ApplicationWindow {
         anchors.fill: parent
         defaultTitle: "%ProjectName%"
         autoSelectInstance: false
+        autoSelectApplication: true
+        mode: "local"
         applications: [
             ApplicationDescription {
                 sourceDir: "qrc:/%ProjectName%.%ApplicationName%/"
