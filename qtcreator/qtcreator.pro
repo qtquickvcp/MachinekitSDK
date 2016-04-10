@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 CONFIG += ordered
-SUBDIRS += plugins syntax wizards
+SUBDIRS += syntax wizards # plugins

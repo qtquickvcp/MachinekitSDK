@@ -1,7 +1,0 @@
-MachinekitSDK
-=============
-
-Qt Creator extension for creating Machinekit applications
-
-
-See the wiki for details: https://github.com/strahlex/MachinekitSDK/wiki/Getting-Started-with-the-Machinekit-SDK
