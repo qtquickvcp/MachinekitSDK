@@ -7,7 +7,6 @@
     "trDisplayName": "Machinekit Application",
     "trDisplayCategory": "Machinekit",
     "icon": "machinekit.png",
-    //"featuresRequired": [ "Plugin.BBIOConfig" ],
 
     "options":
     [
