@@ -9,7 +9,7 @@ WIZARD_FILES = machinekitapplication \
 include(../../paths.pri)
 
 wizard_install.files = $$WIZARD_FILES
-wizard_install.path = $$QTCREATOR_INSTALL_DIR/share/qtcreator/templates/wizards/
+wizard_install.path = $$QTCREATOR_INSTALL_DIR/templates/wizards/
 
 OTHER_FILES += $$WIZARD_FILES
 
