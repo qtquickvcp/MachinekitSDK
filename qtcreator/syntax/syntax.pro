@@ -5,7 +5,7 @@ OTHER_FILES = hal.xml
 include(../../paths.pri)
 
 files_install.files = $$OTHER_FILES
-files_install.path = $$QTCREATOR_INSTALL_DIR/share/qtcreator/generic-highlighter/
+files_install.path = $$QTCREATOR_INSTALL_DIR/generic-highlighter/
 
 INSTALLS += files_install
 
